@@ -3,7 +3,7 @@ import { Text, View, TextInput } from 'react-native';
 import { StaticScreenProps, useNavigation } from '@react-navigation/native';
 import { NavigationButton } from '@/components/navigation-button';
 import { useForm, Controller } from "react-hook-form"
-import * as z from 'zod'
+import { z } from 'zod'
 
 import { zodResolver } from '@hookform/resolvers/zod';
 type Props = StaticScreenProps<{
@@ -68,7 +68,7 @@ export const AreaInputScreen: React.FC<Props> = ({ route }) => {
 
   return (
     <View className='flex-1 bg-gradient-to-b bg-white to-white px-6 py-8'>
-      <Text className='text-3xl font-bold text-gray-800 mb-2 text-center'>Tamanho da Área</Text>
+      <Text className='text-3xl font-bold text-primary mb-2 text-center'>Tamanho da Área</Text>
       <Text className='text-base text-gray-600 mb-8 text-center'>
         Qual o tamanho da área que você vai plantar?
       </Text>
