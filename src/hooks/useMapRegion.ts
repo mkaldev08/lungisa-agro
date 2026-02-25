@@ -1,22 +1,19 @@
 import { useState } from 'react';
-import { Region } from 'react-native-maps';
-import { MAP_REGIONS } from '@/constants/map';
-import { MapMarker, RegionInfo } from '@/types/map';
+import { MAP_REGIONS } from '../constants/map';
+import { MapMarker, RegionInfo, MapRegion } from '../types/map';
 
 interface UseMapRegionReturn {
-  currentRegion: Region;
+  currentRegion: MapRegion;
   selectedInfo: RegionInfo;
   markers: MapMarker[];
-  handleRegionChange: (region: Region) => void;
+  handleRegionChange: (region: MapRegion) => void;
   setSelectedInfo: (info: RegionInfo) => void;
   addMarker: (marker: MapMarker) => void;
   removeMarker: (markerId: string) => void;
 }
 
-export const useMapRegion = (
-  initialRegion: Region = MAP_REGIONS.ANGOLA
-): UseMapRegionReturn => {
-  const [currentRegion, setCurrentRegion] = useState<Region>(initialRegion);
+export const useMapRegion = (initialRegion: MapRegion = MAP_REGIONS.ANGOLA): UseMapRegionReturn => {
+  const [currentRegion, setCurrentRegion] = useState<MapRegion>(initialRegion);
   const [selectedInfo, setSelectedInfo] = useState<RegionInfo>({
     province: 'Luanda',
     municipality: '',
@@ -24,7 +21,7 @@ export const useMapRegion = (
   });
   const [markers, setMarkers] = useState<MapMarker[]>([]);
 
-  const handleRegionChange = (region: Region) => {
+  const handleRegionChange = (region: MapRegion) => {
     setCurrentRegion(region);
     // Add logic to update location info based on region coordinates
   };

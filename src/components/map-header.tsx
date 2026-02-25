@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { MapHeaderProps } from '@/types/map';
+import { MapHeaderProps } from '../types/map';
 
 export const MapHeader: React.FC<MapHeaderProps> = ({ title, subtitle }) => {
   return (

@@ -8,7 +8,7 @@ const Navigation = createStaticNavigation(RootStack);
 
 export default function App() {
   return (
-    <SafeAreaProvider className='flex-1 p-4 bg-white'>
+    <SafeAreaProvider className='flex-1 p-4 bg-white justify-center items-center'>
       <StatusBar style="auto" />
       <Navigation />
     </SafeAreaProvider>

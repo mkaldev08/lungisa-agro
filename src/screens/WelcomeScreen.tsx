@@ -9,12 +9,17 @@ export const Welcome: React.FC = () => {
   return (
     <View className='flex-1 bg-white items-center justify-center px-6'>
       <View className='items-center mb-12'>
-        <Text className='text-4xl font-bold text-green-900 mb-4'>🌱 Lungisa Agro</Text>
+        <Image
+          source={require('../../assets/logo/logo-no-label.png')}
+          className='w-32 h-32 mb-6'
+          resizeMode='contain'
+        />
+        <Text className='text-4xl font-bold text-green-900 mb-4'>Lungisa Agro</Text>
         <Text className='text-lg text-gray-600 text-center'>
-          Sistema de Recomendação Agrícola
+          Cálculo de Fertilizantes
         </Text>
         <Text className='text-base text-gray-500 text-center mt-2'>
-          Descubra as melhores práticas para sua cultura
+          Descubra a quantidade certa de adubo para sua lavoura
         </Text>
       </View>
 

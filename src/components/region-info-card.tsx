@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { RegionInfoCardProps } from '@/types/map';
+import { RegionInfoCardProps } from '../types/map';
 
 export const RegionInfoCard: React.FC<RegionInfoCardProps> = ({
   province,
