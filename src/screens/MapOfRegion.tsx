@@ -1,13 +1,16 @@
 import type { StaticScreenProps } from '@react-navigation/native';
 import { AppleMaps, GoogleMaps } from 'expo-maps';
 import { Platform, StyleSheet, Text, View, Alert } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { MapHeader, LocationSearchBar, LocationSearchResults, CurrentLocationButton, type LocationResult } from '@/components';
 import { NavigationButton } from '@/components/navigation-button';
 import { MAP_REGIONS } from '@/constants/map';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
+import { useVoiceGuide } from '@/hooks/useVoiceGuide';
+import { voiceService } from '@/services/voiceService';
+import { useAccessibilityStore } from '@/store/accessibilityStore';
 
 type Props = StaticScreenProps<{
   cropId: string;
@@ -26,6 +29,8 @@ type MapClickEventCoordinates = {
 export const MapOfRegion: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const { cropId } = route.params as { cropId: string };
+  const voiceEnabled = useAccessibilityStore((state) => state.voiceEnabled);
+  const lastSpokenLocationRef = useRef<string | null>(null);
 
   const googleMapRef = useRef<GoogleMaps.MapView>(null);
   const appleMapRef = useRef<AppleMaps.MapView>(null);
@@ -43,6 +48,20 @@ export const MapOfRegion: React.FC<Props> = ({ route }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<LocationResult[]>([]);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
+
+  useVoiceGuide(
+    'Escolha a localização. Pesquise ou toque no mapa. Depois toque em Confirmar Local.',
+    [],
+  );
+
+  const speakIfEnabled = useCallback(
+    (text: string) => {
+      if (voiceEnabled) {
+        voiceService.speak(text);
+      }
+    },
+    [voiceEnabled],
+  );
 
   // Obter localização do usuário ao carregar
   useEffect(() => {
@@ -110,6 +129,21 @@ export const MapOfRegion: React.FC<Props> = ({ route }) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (!selectedLocation) {
+      lastSpokenLocationRef.current = null;
+      return;
+    }
+
+    const key = `${selectedLocation.latitude.toFixed(4)}-${selectedLocation.longitude.toFixed(4)}`;
+    if (lastSpokenLocationRef.current === key) {
+      return;
+    }
+
+    lastSpokenLocationRef.current = key;
+    speakIfEnabled('Local marcado. Toque em Confirmar Local.');
+  }, [selectedLocation, speakIfEnabled]);
 
   // Pesquisar local pelo nome
   const handleSearchLocation = async () => {
@@ -282,6 +316,8 @@ export const MapOfRegion: React.FC<Props> = ({ route }) => {
       );
       return;
     }
+
+    speakIfEnabled('A seguir, perguntas sobre o solo.');
 
     navigation.navigate('SoilQuestions', {
       cropId,
